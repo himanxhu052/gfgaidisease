@@ -1,0 +1,28 @@
+[
+    {
+        "disease": "Common Cold",
+        "symptoms": ["fever", "cough", "headache"],
+        "medications": ["Paracetamol", "Cough Syrup", "Rest and Hydration"],
+        "tests": ["Complete Blood Count"]
+    },
+    {
+        "disease": "Flu",
+        "symptoms": ["high fever", "fatigue", "nausea", "headache"],
+        "medications": ["Paracetamol", "Rest and Hydration"],
+        "tests": ["Blood Test"]
+    },
+    {
+        "disease": "Heart Disease",
+        "symptoms": [
+            "extreme anxiety", 
+            "fainting", 
+            "lightheadedness", 
+            "nausea", 
+            "palpitations", 
+            "shortness of breath", 
+            "sweating"
+        ],
+        "medications": ["Aspirin", "Beta-blockers", "Nitroglycerin", "Statins"],
+        "tests": ["Electrocardiogram (ECG)", "Blood Tests", "Stress Test"]
+    }
+]

@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Disease Detection & Health Calculators</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            background-image: url('background.jpg'); /* Add your image URL */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .main-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            width: 100%;
+            max-width: 1200px;
+            background: rgba(255, 255, 255, 0.8); /* Transparent white background */
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .container {
+            background-color: white;
+            padding: 30px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            flex: 1;
+            margin: 10px;
+            min-width: 250px;
+        }
+
+        .container h2 {
+            color: #333;
+            font-size: 1.8rem;
+        }
+
+        .container p {
+            font-size: 1rem;
+            color: #555;
+        }
+
+        label {
+            font-size: 1rem;
+            color: #555;
+        }
+
+        input[type="text"], input[type="number"] {
+            width: 100%;
+            padding: 12px;
+            margin-top: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 1rem;
+        }
+
+        input:focus {
+            border-color: #5f9ea0;
+            outline: none;
+            box-shadow: 0 0 10px rgba(95, 158, 160, 0.2);
+        }
+
+        button {
+            background: linear-gradient(135deg, #6a11cb, #2575fc);
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            margin-top: 20px;
+            cursor: pointer;
+            width: 100%;
+            transition: background 0.3s ease;
+        }
+
+        button:hover {
+            background: linear-gradient(135deg, #2575fc, #6a11cb);
+        }
+
+        a {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 10px 15px;
+            background: linear-gradient(135deg, #ff5858, #f09819);
+            color: white;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: background 0.3s ease;
+        }
+
+        a:hover {
+            background: linear-gradient(135deg, #f09819, #ff5858);
+        }
+
+        .calculator-section {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            gap: 20px;
+        }
+
+        /* Doctor Appointment Section */
+        .appointment-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            margin-top: 20px; /* Add space between other sections and this one */
+        }
+
+        .appointment-container h2 {
+            font-size: 1.5rem;
+            color: #333;
+        }
+
+        .appointment-container p {
+            font-size: 1rem;
+            color: #555;
+        }
+
+        .appointment-container a {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 10px 15px;
+            background: linear-gradient(135deg, #32CD32, #228B22);
+            color: white;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: background 0.3s ease;
+        }
+
+        .appointment-container a:hover {
+            background: linear-gradient(135deg, #228B22, #32CD32);
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <!-- Disease Detection Section -->
+        <div class="container">
+            <h2>AI Disease Detection</h2>
+            <label for="symptoms">Enter your symptoms:</label>
+            <input type="text" id="symptoms" placeholder="e.g., fever, cough, headache">
+            <button onclick="predictDisease()">Predict Disease</button>
+            <div class="result" id="result"></div>
+        </div>
+
+        <!-- Calculator Section (Horizontal Layout) -->
+        <div class="calculator-section">
+            <!-- BMI Calculator -->
+            <div class="container">
+                <h2>BMI Calculator</h2>
+                <p>Want to calculate your BMI? Click the button below:</p>
+                <a href="bmi.html" target="_blank">Go to BMI Calculator</a>
+            </div>
+
+            <!-- Diabetes Risk Calculator -->
+            <div class="container">
+                <h2>Diabetes Risk Calculator</h2>
+                <p>Want to calculate your diabetes risk? Click the button below:</p>
+                <a href="diabetes.html" target="_blank">Go to Diabetes Calculator</a>
+            </div>
+
+            <!-- Body Fat Calculator -->
+            <div class="container">
+                <h2>Body Fat Calculator</h2>
+                <p>Want to calculate your body fat percentage? Click the button below:</p>
+                <a href="bodyfat.html" target="_blank">Go to Body Fat Calculator</a>
+            </div>
+        </div>
+
+        <!-- Doctor Appointment Section (Moved to Bottom) -->
+        <div class="appointment-container">
+            <h2>1:1 Doctor Appointment</h2>
+            <p>Book an appointment with a doctor 24x7 online</p>
+            <a href="doctor-appointment.html" target="_blank">Book Now</a>
+        </div>
+    </div>
+
+    <script>
+        // AI Disease Detection Function
+        const diseases = [
+            {
+                "disease": "Common Cold",
+                "symptoms": ["fever", "cough", "headache"],
+                "medications": ["Paracetamol", "Cough Syrup", "Rest and Hydration"],
+                "tests": ["Complete Blood Count"]
+            },
+            {
+                "disease": "Flu",
+                "symptoms": ["high fever", "fatigue", "nausea", "headache"],
+                "medications": ["Paracetamol", "Rest and Hydration"],
+                "tests": ["Blood Test"]
+            },
+            {
+                "disease": "Heart Disease",
+                "symptoms": [
+                    "extreme anxiety", 
+                    "fainting", 
+                    "lightheadedness", 
+                    "nausea", 
+                    "palpitations", 
+                    "shortness of breath", 
+                    "sweating"
+                ],
+                "medications": ["Aspirin", "Beta-blockers", "Nitroglycerin", "Statins"],
+                "tests": ["Electrocardiogram (ECG)", "Blood Tests", "Stress Test"]
+            }
+        ];
+
+        function predictDisease() {
+            const symptomsInput = document.getElementById('symptoms').value.toLowerCase();
+            let result = document.getElementById('result');
+
+            const enteredSymptoms = symptomsInput.split(',').map(symptom => symptom.trim());
+
+            let matchedDisease = null;
+
+            diseases.forEach(disease => {
+                const matchedSymptoms = disease.symptoms.filter(symptom => enteredSymptoms.includes(symptom));
+                if (matchedSymptoms.length > 0) {
+                    matchedDisease = disease;
+                }
+            });
+
+            if (matchedDisease) {
+                result.innerHTML = `
+                    <h3>Predicted Disease: ${matchedDisease.disease}</h3>
+                    <p>Suggested Medications:</p>
+                    <ul>
+                        ${matchedDisease.medications.map(med => `<li>${med}</li>`).join('')}
+                    </ul>
+                    <p>Suggested Tests:</p>
+                    <ul>
+                        ${matchedDisease.tests.map(test => `<li>${test}</li>`).join('')}
+                    </ul>
+                    <a href="https://www.1mg.com/labs/test/cbc-complete-blood-count-1717?srsltid=AfmBOoqWdarIUzM5JvvxB4sMQ56GId0V7j9e2ObvG7z-AzN_-OFLEiHK&wpsrc=Google+Organic+Search" target="_blank">Book a Blood Test</a>
+                `;
+            } else {
+                result.innerHTML = `
+                    <h3>Predicted Disease: Unknown</h3>
+                    <p>Please consult a doctor for a more accurate diagnosis.</p>
+                `;
+            }
+        }
+    </script>
+</body>
+</html>

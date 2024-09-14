@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Body Fat Calculator</title>
+    <style>
+        /* Background image and body styling */
+        body {
+            font-family: Arial, sans-serif;
+            background: url('https___dev-to-uploads.s3.amazonaws.com_uploads_articles_97bqprmm9lufkjuf813b.avif') no-repeat center center fixed;
+            background-size: cover;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        /* Container with fade-in animation */
+        .container {
+            background-color: rgba(255, 255, 255, 0.9);
+            max-width: 600px;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            animation: fadeIn 2s ease-in-out;
+        }
+
+        h2 {
+            color: #333;
+        }
+
+        label {
+            font-size: 1rem;
+            color: #555;
+        }
+
+        input[type="number"], select {
+            width: 100%;
+            padding: 12px;
+            margin-top: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 1rem;
+        }
+
+        input:focus {
+            border-color: #5f9ea0;
+            outline: none;
+            box-shadow: 0 0 10px rgba(95, 158, 160, 0.2);
+        }
+
+        /* Button styling with hover effect */
+        button {
+            background: linear-gradient(135deg, #6a11cb, #2575fc);
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            margin-top: 20px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        button:hover {
+            background: linear-gradient(135deg, #2575fc, #6a11cb);
+        }
+
+        /* Fade-in animation for container and result */
+        .fade-in {
+            opacity: 0;
+            animation: fadeIn 2s forwards;
+        }
+
+        /* Result styling */
+        .result {
+            margin-top: 20px;
+            font-size: 1.2rem;
+            color: #333;
+        }
+
+        /* Keyframes for fade-in animation */
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container fade-in">
+        <h2>Body Fat Percentage Calculator</h2>
+        <label for="gender">Gender:</label>
+        <select id="gender">
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+        </select>
+
+        <label for="weight">Weight (kg):</label>
+        <input type="number" id="weight" placeholder="Enter your weight in kilograms">
+
+        <label for="waist">Waist Circumference (cm):</label>
+        <input type="number" id="waist" placeholder="Enter waist circumference in centimeters">
+
+        <label for="hips" id="hipsLabel" style="display: none;">Hips Circumference (cm):</label>
+        <input type="number" id="hips" placeholder="Enter hips circumference in centimeters" style="display: none;">
+
+        <label for="wrist" id="wristLabel" style="display: none;">Wrist Circumference (cm):</label>
+        <input type="number" id="wrist" placeholder="Enter wrist circumference in centimeters" style="display: none;">
+
+        <label for="forearm" id="forearmLabel" style="display: none;">Forearm Circumference (cm):</label>
+        <input type="number" id="forearm" placeholder="Enter forearm circumference in centimeters" style="display: none;">
+
+        <button onclick="calculateBodyFat()">Calculate Body Fat</button>
+
+        <div class="result fade-in" id="result"></div>
+    </div>
+
+    <script>
+        const genderInput = document.getElementById('gender');
+        const hipsLabel = document.getElementById('hipsLabel');
+        const hipsInput = document.getElementById('hips');
+        const wristLabel = document.getElementById('wristLabel');
+        const wristInput = document.getElementById('wrist');
+        const forearmLabel = document.getElementById('forearmLabel');
+        const forearmInput = document.getElementById('forearm');
+
+        // Toggle additional input fields based on gender
+        genderInput.addEventListener('change', function() {
+            if (this.value === 'female') {
+                hipsLabel.style.display = 'block';
+                hipsInput.style.display = 'block';
+                wristLabel.style.display = 'block';
+                wristInput.style.display = 'block';
+                forearmLabel.style.display = 'block';
+                forearmInput.style.display = 'block';
+            } else {
+                hipsLabel.style.display = 'none';
+                hipsInput.style.display = 'none';
+                wristLabel.style.display = 'none';
+                wristInput.style.display = 'none';
+                forearmLabel.style.display = 'none';
+                forearmInput.style.display = 'none';
+            }
+        });
+
+        function calculateBodyFat() {
+            const gender = document.getElementById('gender').value;
+            const weight = parseFloat(document.getElementById('weight').value);
+            const waist = parseFloat(document.getElementById('waist').value);
+            let bodyFat = 0;
+            
+            if (gender === 'male') {
+                // U.S. Navy formula for males
+                bodyFat = 86.010 * Math.log10(waist - 70) - 70.041 * Math.log10(weight) + 36.76;
+            } else {
+                const hips = parseFloat(hipsInput.value);
+                const wrist = parseFloat(wristInput.value);
+                const forearm = parseFloat(forearmInput.value);
+
+                // U.S. Navy formula for females
+                bodyFat = 163.205 * Math.log10(waist + hips - wrist) - 97.684 * Math.log10(weight) - 78.387;
+            }
+
+            const result = document.getElementById('result');
+            if (isNaN(bodyFat) || bodyFat <= 0) {
+                result.innerHTML = "Please enter valid measurements.";
+            } else {
+                result.innerHTML = `Your body fat percentage is approximately ${bodyFat.toFixed(2)}%.`;
+                result.classList.add('fade-in');
+            }
+        }
+    </script>
+</body>
+</html>
